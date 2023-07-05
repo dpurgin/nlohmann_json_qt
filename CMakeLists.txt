@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.8)
 
+if (DEFINED PROJECT_NAME)
+    set(JSON_QT_STANDALONE OFF)
+else()
+    set(JSON_QT_STANDALONE ON)
+endif()
+
 project(nlohmann_json_qt LANGUAGES CXX)
 
-option(JSON_QT_BUILD_TESTS "Build tests for nlohmann_json_qt" ON)
+option(JSON_QT_BUILD_TESTS "Build tests for nlohmann_json_qt" ${JSON_QT_STANDALONE})
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 11)

@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
 include(FetchContent)
 
-FetchContent_Declare(json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.9.1
-    GIT_SHALLOW TRUE
-)
-set(JSON_BuildTests OFF CACHE BOOL "")
-set(JSON_Install OFF CACHE BOOL "")
-FetchContent_MakeAvailable(json)
-
-project(nlohmann_json_qt_test LANGUAGES CXX)
+if (NOT TARGET nlohmann_json)
+    FetchContent_Declare(json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.9.1
+        GIT_SHALLOW TRUE
+    )
+    set(JSON_BuildTests OFF CACHE BOOL "")
+    set(JSON_Install OFF CACHE BOOL "")
+    FetchContent_MakeAvailable(json)
+endif()
 
 set(CMAKE_AUTOMOC TRUE)
 
