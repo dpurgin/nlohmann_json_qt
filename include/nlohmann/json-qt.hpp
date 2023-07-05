@@ -1,7 +1,7 @@
 // Helper definitions for Qt types to use with nlohmann/json deserializer
 // Copyright (C) 2020 Dmitriy Purgin <dpurgin@gmail.com>
 //
-// Licensed under the MIT license. See LICENSE for details. 
+// Licensed under the MIT license. See LICENSE for details.
 //
 // Permission is hereby  granted, free of charge, to any  person obtaining a copy
 // of this software and associated  documentation files (the "Software"), to deal
@@ -9,10 +9,10 @@
 // to  use, copy,  modify, merge,  publish, distribute,  sublicense, and/or  sell
 // copies  of  the Software,  and  to  permit persons  to  whom  the Software  is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE  IS PROVIDED "AS  IS", WITHOUT WARRANTY  OF ANY KIND,  EXPRESS OR
 // IMPLIED,  INCLUDING BUT  NOT  LIMITED TO  THE  WARRANTIES OF  MERCHANTABILITY,
 // FITNESS FOR  A PARTICULAR PURPOSE AND  NONINFRINGEMENT. IN NO EVENT  SHALL THE
@@ -103,7 +103,7 @@ inline void to_json(nlohmann::json& j, const QVariantList& list)
 {
     j = nlohmann::json::array();
 
-    for (auto it = std::cbegin(list); it != std::cend(list); ++it)
+    for (auto it = list.cbegin(); it != list.cend(); ++it)
     {
         nlohmann::json serialized;
         to_json(serialized, *it);
@@ -115,7 +115,7 @@ inline void to_json(nlohmann::json& j, const QVariantMap& map)
 {
     j = nlohmann::json::object();
 
-    for (auto it = std::cbegin(map); it != std::cend(map); ++it)
+    for (auto it = map.cbegin(); it != map.cend(); ++it)
     {
         nlohmann::json serialized;
         to_json(serialized, it.value());
