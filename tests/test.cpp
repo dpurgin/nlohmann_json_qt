@@ -28,6 +28,8 @@
 #include <nlohmann/json-qt.hpp>
 #include <nlohmann/json.hpp>
 
+Q_DECLARE_METATYPE(nlohmann::json)
+
 class NlohmannJsonQtTest : public QObject
 {
     Q_OBJECT
@@ -55,6 +57,11 @@ private slots:
     void testBasicJsonToQVectorInt();
 
     void testBasicJsonToQStringList();
+
+    void testBasicJsonToLongLong();
+
+    void testQVariantToNlohmannJson_data();
+    void testQVariantToNlohmannJson();
 };
 
 void NlohmannJsonQtTest::testBasicJsonToQString_data()
@@ -115,6 +122,32 @@ void NlohmannJsonQtTest::testBasicJsonToQStringList()
                            << "bar"
                            << ""
                            << "342");
+}
+
+void NlohmannJsonQtTest::testBasicJsonToLongLong()
+{
+    auto json = "8589934591"_json;
+    QCOMPARE(json.get<qlonglong>(), 0x1FFFFFFFFLL);
+    QCOMPARE(json.get<qulonglong>(), 0x1FFFFFFFFULL);
+}
+
+void NlohmannJsonQtTest::testQVariantToNlohmannJson_data()
+{
+    QTest::addColumn<QVariant>("input");
+    QTest::addColumn<nlohmann::json>("expected");
+
+    QTest::addRow("qlonglong") << QVariant{0x1FFFFFFFFLL} << "8589934591"_json;
+    QTest::addRow("qulonglong") << QVariant{0x1FFFFFFFFULL} << "8589934591"_json;
+}
+
+void NlohmannJsonQtTest::testQVariantToNlohmannJson()
+{
+    QFETCH(QVariant, input);
+    QFETCH(nlohmann::json, expected);
+
+    nlohmann::json actual;
+    to_json(actual, input);
+    QCOMPARE(actual, expected);
 }
 
 QTEST_APPLESS_MAIN(NlohmannJsonQtTest)

@@ -13,7 +13,7 @@ option(JSON_QT_BUILD_TESTS "Build tests for nlohmann_json_qt" ${JSON_QT_STANDALO
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 11)
 
-add_library(nlohmann_json_qt INTERFACE)
+add_library(nlohmann_json_qt INTERFACE include/nlohmann/json-qt.hpp)
 
 find_package(Qt5Core REQUIRED)
 

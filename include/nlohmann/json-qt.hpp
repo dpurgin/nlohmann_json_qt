@@ -155,6 +155,14 @@ inline void to_json(nlohmann::json& j, const QVariant& variant)
     {
         j = variant.toUInt();
     }
+    else if (type == QMetaType::LongLong)
+    {
+        j = variant.toLongLong();
+    }
+    else if (type == QMetaType::ULongLong)
+    {
+        j = variant.toULongLong();
+    }
     else
     {
         j.clear();

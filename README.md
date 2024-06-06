@@ -18,6 +18,8 @@ Adds support for deserialization of the following Qt types from `basic_json`:
   * `bool`
   * `int`
   * `unsigned int`
+  * `long long int`
+  * `unsigned long long int`
   * All other values are converted to a `null` JSON value.
 
 This is a header-only library. Add the header to your include paths or use CMake and link against `nlohmann_json_qt`.
