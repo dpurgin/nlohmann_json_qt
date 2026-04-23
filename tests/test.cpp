@@ -28,6 +28,15 @@
 #include <nlohmann/json-qt.hpp>
 #include <nlohmann/json.hpp>
 
+// Workaround for a compile error when using mingw 13 with Qt6
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+namespace QTypeTraits {
+template<>
+struct has_ostream_operator<QDebug, nlohmann::json> : std::false_type
+{};
+} // namespace QTypeTraits
+#endif
+
 Q_DECLARE_METATYPE(nlohmann::json)
 
 class NlohmannJsonQtTest : public QObject

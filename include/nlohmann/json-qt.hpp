@@ -1,5 +1,5 @@
 // Helper definitions for Qt types to use with nlohmann/json deserializer
-// Copyright (C) 2020 Dmitriy Purgin <dpurgin@gmail.com>
+// Copyright (C) 2020-2026 Dmitriy Purgin <dpurgin@gmail.com>
 //
 // Licensed under the MIT license. See LICENSE for details.
 //
@@ -81,6 +81,7 @@ inline void from_json(const nlohmann::json &j, QVariant& variant)
     }
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 template<typename T>
 inline void from_json(const nlohmann::json &j, QVector<T> &vector)
 {
@@ -88,6 +89,7 @@ inline void from_json(const nlohmann::json &j, QVector<T> &vector)
         vector.push_back(item.get<T>());
     }
 }
+#endif
 
 template<typename T>
 inline void from_json(const nlohmann::json &j, QList<T> &list)
@@ -125,7 +127,11 @@ inline void to_json(nlohmann::json& j, const QVariantMap& map)
 
 inline void to_json(nlohmann::json& j, const QVariant& variant)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto type = static_cast<QMetaType::Type>(variant.type());
+#else
+    auto type = variant.metaType().id();
+#endif
 
     if (type == QMetaType::QVariantList)
     {
