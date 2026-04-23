@@ -1,0 +1,49 @@
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - qtversionmajor: '5'
+          qtversion: '5.15.*'
+          arch: 'win64_msvc2019_64'
+        - qtversionmajor: '5'
+          qtversion: '5.12.*'
+          arch: 'win64_msvc2017_64'
+        - qtversionmajor: '6'
+          qtversion: '6.8.*'
+          arch: 'win64_msvc2022_64'
+        - qtversionmajor: '6'
+          qtversion: '6.11.*'
+          arch: 'win64_msvc2022_64'
+        
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with: 
+        version: ${{ matrix.qtversion }}
+        arch: ${{ matrix.arch }}
+        archives: 'qtbase'
+   
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+      
+    - name: Configure CMake
+      working-directory: ${{runner.workspace}}/build      
+      run: cmake ${env:GITHUB_WORKSPACE} -A x64 -DJSON_QT_BUILD_TESTS=ON -DJSON_QT_REQUIRED_QT_VERSION_MAJOR=${{matrix.qtversionmajor}}
+      
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: cmake --build . --config Debug
+
+    - name: Test
+      working-directory: ${{runner.workspace}}/build            
+      run: |        
+        ctest -C Debug --output-on-failure
