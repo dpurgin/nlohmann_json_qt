@@ -28,8 +28,10 @@
 #include <nlohmann/json-qt.hpp>
 #include <nlohmann/json.hpp>
 
-// Workaround for a compile error when using mingw 13 with Qt6
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+// Workaround for a compile error when using gcc 13 caused by a metatype usage with nlohmann::json
+// In instantiation of 'struct std::is_default_constructible<tagMSG>':
+// error: static assertion failed: template argument must be a complete class or an unbounded array
+#if __GNUC__ >= 13
 namespace QTypeTraits {
 template<>
 struct has_ostream_operator<QDebug, nlohmann::json> : std::false_type
