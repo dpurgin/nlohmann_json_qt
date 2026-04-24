@@ -5,7 +5,6 @@ if (NOT TARGET nlohmann_json)
     FetchContent_Declare(json
         GIT_REPOSITORY https://github.com/nlohmann/json.git
         GIT_TAG v3.12.0
-        GIT_SHALLOW TRUE
     )
     set(JSON_BuildTests OFF CACHE BOOL "")
     set(JSON_Install OFF CACHE BOOL "")
